@@ -1,10 +1,85 @@
 {% extends "layout.html" %}
+{% block style %}
+<style>
+    #background {
+        height: 25em;
+        width: 92%;
+        opacity: 0.8;
+    }
+
+    nav {
+        margin-bottom: 20px;
+    }
+
+    .container-custome {
+        position: relative;
+        text-align: center;
+
+    }
+
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .centered p {
+        color: rgb(207, 50, 10);
+        border-radius: 10px;
+        background-color: rgba(193, 226, 245, 0.6);
+        font-family: "Times";
+        font-weight: bold;
+        font-size: 45px;
+        padding-right: 40px;
+        padding-left: 40px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .container {
+        font-family: "Roboto";
+        margin-right: 50px;
+        margin-left: 50px;
+        margin-top: 20px;
+    }
+    .container p {
+        font-size: 20px;
+    }
+
+    .container h3 {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
 {% block title%}
     Home
 {% endblock %}
 
-{% block main %}
+{% block custome %}
+<div class="container-custome">
+    <img src="static/images/dna-background.jpg" alt="DNA background image" id="background"/>
+    <div class="centered">
+        <p> Take a look at our bioinformatic toolkit </p>
+     </div>
+</div>
+<div class="container">
+    <h3> 1. Sequence analyzing: </h3>
+    <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
+        such as: sequence length, GC content, motif finding,...
+    </p>
 
- <h1> Welcome to our bioinformatic website</h1>
+    <h3> 2. BLAST: </h3>
+    <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
+        such as: sequence length, GC content, motif finding,...
+    </p>
+
+    <h3> 3. Data query </h3>
+    <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
+        such as: sequence length, GC content, motif finding,...
+    </p>
+</div>
+
 
 {% endblock %}

@@ -9,15 +9,17 @@
     font-size: 25px;
     font-family: "Time";
     font-weight:bold;
-    background-color: rgb(93, 236, 129);
+    background-color: rgba(90, 245, 103, 0.9);
     padding-right: 10px;
     padding-left: 6px;
     border-radius: 30px;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s,
+    background-color 0.2s
 }
 
 .navbar-brand:hover {
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    background-color: rgba(48, 235, 63, 0.9);
 }
 
 

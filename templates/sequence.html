@@ -40,10 +40,9 @@
 
 }
 
-#result-block-2 label{
+#result-block-2 label {
     margin-left: 10px;
     font-weight: bold;
-
 }
 
 #result-block-2 textarea {
@@ -156,10 +155,13 @@
             }
 
             // validate DNA or RNA motif
-            if (!/^[ATGCatgc]+$/.test(motif) && !/^[AUGCaugc]+$/.test(motif)) {
+            if(motif.length !== 0) {
+                if (!/^[ATGCatgc]+$/.test(motif) && !/^[AUGCaugc]+$/.test(motif)) {
                 event.preventDefault();
                 alert("Please provide a valid DNA/RNA motif");
+                }
             }
+
         }
 
         function clear_all() {
@@ -170,10 +172,10 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.sequence-form').addEventListener('submit', validate_input);
-            });
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('#clear-all').addEventListener('click', clear_all);
-            });
+        });
     </script>
 {% endblock %}
