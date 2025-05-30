@@ -1,0 +1,24 @@
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: rgb(7, 94, 7);
+    font-size: 25px;
+    font-family: "Time";
+    font-weight:bold;
+    background-color: rgb(93, 236, 129);
+    padding-right: 10px;
+    padding-left: 6px;
+    border-radius: 30px;
+    transition: box-shadow 0.2s;
+}
+
+.navbar-brand:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+

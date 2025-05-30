@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <h1> Login </h1>
+    <br>
+    <form action="/login" method="post" class="sign-form">
+        <div class="mb-3">
+            <input id="username"
+            class="form-control mx-auto w-auto"
+            name="username"
+            autocomplete="off" autofocus placeholder="Username" type="text"
+            pattern="^(?!__{2})[a-zA-Z][a-zA-Z0-9_]{2,19}$"
+            title="Username must start with a letter, can contain only letters, numbers, underscores; cannot start with two underscores and be 3-20 characters long."
+            required/>
+        </div>
+        <div class="mb-3">
+            <input id="password"
+            class="form-control mx-auto w-auto"
+            name="password"
+            autocomplete="off" placeholder="Password" type="password"
+            pattern="^(?=.*\d)(?=.*[@#$%^&*!_])[a-zA-Z][a-zA-Z\d@#$%^&*!_]{5,31}$"
+            title="Password must start with a character, at least one digit, one special character, and be 6-32 characters long."
+            required/>
+
+        </div>
+
+        <div class="submit-btn">
+            <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+        <br>
+        <div>
+            <label for="register-now">New to Bio-Genre? </label>
+            <a href="/register" id="register-now">Register now</a>
+        </div>
+    </form>
+    <script src="static/scripts/register.js"></script>
+
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<style>
+#seq-output-option label {
+    margin-right: 15px;
+}
+
+#seq-output-option {
+    margin-bottom: 10px;
+}
+#motif {
+    margin-right: 0px;
+}
+
+#clear-all {
+    margin-left: 5px;
+}
+
+#result-form {
+    margin-top: 2em;
+}
+#result-block-1 input {
+    width: 15em;
+    text-align: center;
+    padding-top: 0.375rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.375rem;
+    padding-left: 0.75rem;
+}
+
+#result-block-1 label {
+    margin-right: 5px;
+    margin-left: 30px;
+    font-weight: bold;
+}
+
+#result-block-2 {
+    text-align: left;
+
+}
+
+#result-block-2 label{
+    margin-left: 10px;
+    font-weight: bold;
+
+}
+
+#result-block-2 textarea {
+    margin-bottom: 20px;
+    background-color: rgba(239, 239, 239, 0.3);
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+#clear-all {
+    border: none;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 0.375rem;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    transition: background-color 0.15s;
+}
+
+#clear-all:hover {
+    background-color: #0b5ed7;
+}
+</style>
+{% endblock %}
+
+{% block title%}
+    Sequence Calculater
+{% endblock %}
+
+{% block main %}
+    <form class="sequence-form" action="/sequence" method='POST'>
+        <p style="font-size: 18px;"> <b>Sequence-calculator</b> is a tool that helps to get general information about DNA/RNA strand</p>
+        <hr>
+
+        <div id="seq-output-option">
+            <input type="checkbox" name="option" value="length" checked/> <label>Length</label>
+            <input type="checkbox" name="option" value="gc_content" checked/> <label>GC_content</label>
+            <input type="checkbox" name="option" value="transcript"/> <label>Transcript</label>
+            <input type="checkbox" name="option" value="translate"/> <label>Translate</label>
+            <input type="checkbox" name="option" value="orf"/> <label>ORF search</label>
+        </div>
+        <div>
+            <label id="motif">Motif search</label>
+            <input autocomplete="off" type="text" name="motif" id="motif-input"/>
+            <button id="clear-all" type="button"> Clear all</button>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="sequence-content" style="font-size: 20px;"> <b>DNA/RNA sequence</b> </label>
+            <textarea rows="6" id ="sequence-content" class="form-control" autofocus
+            placeholder="Enter your sequence here" type="text" name="sequence"
+            style="width:100%; white-space: pre-wrap;"></textarea>
+        </div>
+
+        <div class="submit-btn">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+    {% if display_result %}
+        <form id="result-form">
+            <h2>Completed</h2>
+            <br>
+            <div id="result-block-2">
+                <label>Your sequence</label>
+                <textarea class="form-control" rows="6" readonly>{{result.input_sequence}}</textarea>
+            </div>
+            <hr>
+            <br>
+            <div id="result-block-1">
+                <label>Length</label><input value="{{result.length}}" disabled/>
+                <label>GC_content</label><input value="{{result.gc}}" disabled/>
+            </div>
+
+            <div id="result-block-2">
+                <label>Transcript</label><textarea class="form-control" rows="6" readonly>{{result.transcript}}</textarea>
+
+                <label>Translate</label><textarea class="form-control" rows="4" readonly>{{result.translate}}</textarea>
+
+                <label>ORF Search</label>
+
+                <textarea class="form-control" rows="7" readonly>{{result.orf}}</textarea>
+
+                <label>Motif Search</label>
+                <textarea class="form-control" rows="4" readonly>{{ result.motif }}</textarea>
+            </div>
+        </form>
+    {% endif %}
+
+    <script>
+        function validate_input(event) {
+            let flag = false;
+            const options = document.querySelectorAll("input[name='option']:checked");
+            const motif = document.querySelector('#motif-input').value.trim();
+            const sequence = document.querySelector('#sequence-content').value.trim();
+
+            if ((options.length > 0 || motif !== "") && sequence !== "") {
+                flag = true;
+            }
+
+            if (!flag) {
+                event.preventDefault();
+                alert("Please choose at least one option and provide a DNA/RNAsequence");
+            }
+            // validate DNA or RNA input
+            if (!/^[ATGCatgc]+$/.test(sequence) && !/^[AUGCaugc]+$/.test(sequence)) {
+                event.preventDefault();
+                alert("Please provide a valid DNA/RNA sequence");
+            }
+
+            // validate DNA or RNA motif
+            if (!/^[ATGCatgc]+$/.test(motif) && !/^[AUGCaugc]+$/.test(motif)) {
+                event.preventDefault();
+                alert("Please provide a valid DNA/RNA motif");
+            }
+        }
+
+        function clear_all() {
+            const options = document.querySelectorAll("input[name='option']:checked");
+            options.forEach(option => option.checked = false)
+            document.querySelector('#motif-input').value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.sequence-form').addEventListener('submit', validate_input);
+            });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#clear-all').addEventListener('click', clear_all);
+            });
+    </script>
+{% endblock %}
