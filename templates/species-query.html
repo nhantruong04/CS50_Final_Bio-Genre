@@ -1,0 +1,203 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<style>
+.container.py-5.text-center {
+    border: 1px solid green;
+    border-radius: 5px;
+    background-color: rgba(236, 255, 220, 0.5);
+    max-width: 95%;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 60px !important;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.form-row {
+    display : flex;
+    gap: 28px;
+    margin: auto;
+}
+
+.query-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.query-group input {
+    width: 200px;
+}
+
+.query-group input:focus {
+    border-color: lightgreen !important;
+    box-shadow: 0 0 0 0.2rem rgba(144, 238, 144, 0.5);
+}
+
+.query-group label {
+    font-weight: bold;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#query-result-count {
+    margin: auto;
+    background-color: rgba(206, 233, 248, 0.6);
+    border: 1px solid rgb(99, 193, 247);
+    border-radius: 5px;
+    text-align: center;
+    max-width: 95%;
+    font-family: "Times";
+    padding-top: 6px;
+    padding-left: 60px;
+
+}
+
+#query-result {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: auto;
+    margin-top: 20px;
+    max-width: 95%;
+}
+
+#species-image {
+    height: 300px;
+    width: 95%;
+    margin-top: 5px;
+}
+
+.query-result-element {
+    background-color: rgba(236, 255, 220, 0.6);
+    border: 1px solid green;
+    border-radius: 5px;
+    width: 19.3em;
+    height: 26em;
+    text-align: center;
+}
+
+.element-sci-name {
+    font-family: "Times";
+    font-size: 25px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.element-common-name {
+    font-family: "Times";
+    font-size: 22px;
+    padding: 10px;
+    text-align: center;
+}
+
+</style>
+{% endblock %}
+
+{% block title%}
+    Species
+{% endblock %}
+
+{% block main %}
+
+    <div class="form-row">
+        <div class="query-group">
+            <label for="species-id">Year:</label>
+            <input  type="text" class="form-control" id="year" placeholder="Enter updated year" style="width: 170px;" value="2025"/>
+        </div>
+        <div class="query-group">
+            <label for="species-id">Species ID:</label>
+            <input  type="text" class="form-control" id="species-id" placeholder="Enter species ID" style="width: 150px;"/>
+        </div>
+
+        <div class="query-group">
+            <label for="scientific-name">Scientific name:</label>
+            <input type="text" class="form-control" id="scientific-name" placeholder="Enter species name"/>
+        </div>
+
+        <div class="query-group">
+            <label for="common-name">Common name:</label>
+            <input type="text" class="form-control" id="common-name" placeholder="Enter common name"/>
+        </div>
+
+        <div class="query-group">
+            <label for="distribution">Geographic distribution:</label>
+            <input type="text" class="form-control" id="location" placeholder="Enter sepcies's distribution location" style="width: 280px;"/>
+        </div>
+    </div>
+
+    <div class="submit-btn">
+            <button id="search-btn" class="btn btn-primary" type="button" style="margin-top: 20px;">Search</button>
+    </div>
+
+
+{% endblock %}
+
+{% block custome2 %}
+
+
+<div id="query-result-count">
+    <h3>Bio-Genre: species query status</h3>
+</div>
+
+<div id="query-result">
+
+</div>
+
+<script>
+    function getLink() {
+        const id = document.querySelector("#species-id").value.trim();
+        const sci_name = document.querySelector("#scientific-name").value.trim();
+        const common_name = document.querySelector("#common-name").value.trim();
+        const location_value = document.querySelector("#location").value.trim();
+        const year = document.querySelector("#year").value.trim();
+
+        let url = "/api/species?";
+
+        if (year) {url += `&year=${encodeURIComponent(year)}`;}
+        if (id) {url += `&id=${encodeURIComponent(id)}`;}
+        if (sci_name) {url += `&sci_name=${encodeURIComponent(sci_name)}`;}
+        if (common_name) {url += `&common_name=${encodeURIComponent(common_name)}`;}
+        if (location_value) {url += `&location=${encodeURIComponent(location_value)}`;}
+
+        return url;
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector("#search-btn").addEventListener('click',
+        async function() {
+            const link = getLink();
+            const data = await fetch(link);
+            const jsdata = await data.json();
+            const result_count = document.querySelector("#query-result-count h3")
+            const resultContainer = document.querySelector("#query-result");
+            resultContainer.innerHTML = '';
+
+            if (jsdata["respond status"] === 400) {
+                result_count.textContent = `Error ${jsdata["respond status"]}: ${jsdata.error}`;
+            }
+
+            else if (jsdata["respond status"] === 404) {
+                result_count.textContent = `Error ${jsdata["respond status"]}: ${jsdata.error}`;
+            }
+
+            else {
+                result_count.textContent = `Result: ${jsdata.result.length}`;
+
+                for (const specie of jsdata.result) {
+                const element = document.createElement('div');
+                element.className = "query-result-element";
+                element.innerHTML =
+                `<img src = "/static/images/species/${specie.id}.png" alt ="${specie.sci_name}'s image" id="species-image"></td>
+                <p> <span class="element-sci-name">${specie.sci_name}</span><br>
+                    <span class="element-common-name">${specie.common_name}</span>
+                </p>`;
+                resultContainer.appendChild(element);
+                }
+            }
+        });
+    });
+
+</script>
+{% endblock %}

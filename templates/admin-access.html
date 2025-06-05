@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block style %}
+<style>
+
+</style>
+{% endblock %}
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+<form action="/admin-access" method="POST">
+    <div class="form-group">
+        <h1> Sercurity key confirm </h1>
+        <br>
+        <div class="mb-3">
+            <label for="input">Security key:</label>
+            <input id="security_key"
+            class="form-control mx-auto w-auto"
+            name="security_key"
+            autocomplete="off" placeholder="Enter your security key to get access" type="password"
+            required/>
+        </div>
+
+        <div class="submit-btn">
+            <button class="btn btn-primary" type="submit">Get Access</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 from functools import wraps
+from flask import session, redirect, flash, render_template
 
 codon_usage = {
     "UUU": "F", "UUC": "F", "UUA": "L", "UUG": "L",
@@ -29,7 +30,8 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
-            return redirect("/login")
+            flash("Login is required to use this feature!")
+            return render_template("login.html")
         return f(*args, **kwargs)
 
     return decorated_function
@@ -122,3 +124,17 @@ def orf_search(sequence):
                             break
 
     return '\n'.join(set(orf)), output
+
+def valid_str_parameter(s: str):
+    for char in s:
+        if not char.isalpha() and char != " ":
+            return False
+    return True
+
+
+# IMPLEMENT BLAST ALGORITHM: strategy to search all the chromosome of organism
+
+# Generate k-mers in the sequence k=3 for sequence < 10bp and k = 5 for longer sequence
+# Find k-mers match in the db sequence
+# Extend the match from both direction
+# Score and filter alignment: +1 for match; -1 for mismatch

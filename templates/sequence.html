@@ -92,7 +92,7 @@
             <button id="clear-all" type="button"> Clear all</button>
         </div>
         <br>
-        <div class="form-group">
+        <div>
             <label for="sequence-content" style="font-size: 20px;"> <b>DNA/RNA sequence</b> </label>
             <textarea rows="6" id ="sequence-content" class="form-control" autofocus
             placeholder="Enter your sequence here" type="text" name="sequence"
@@ -172,10 +172,8 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.sequence-form').addEventListener('submit', validate_input);
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('#clear-all').addEventListener('click', clear_all);
         });
+
     </script>
 {% endblock %}

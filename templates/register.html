@@ -1,14 +1,23 @@
 {% extends "layout.html" %}
 
+{% block style %}
+<style>
+
+</style>
+{% endblock %}
+
 {% block title %}
     Register
 {% endblock %}
 
 {% block main %}
-<h1> Register </h1>
-<br>
-    <form action="/register" method="post" class="sign-form">
+
+<form action="/register" method="post" >
+    <div class="form-group">
+        <h1>Register</h1>
+        <br>
         <div class="mb-3">
+            <label for="input">Register name:</label>
             <input id="username"
             class="form-control mx-auto w-auto"
             name="username"
@@ -18,26 +27,36 @@
             required/>
         </div>
         <div class="mb-3">
+            <label for="input">Password:</label>
             <input id="password"
             class="form-control mx-auto w-auto"
             name="password"
-            autocomplete="off" placeholder="Password" type="text"
+            autocomplete="off" placeholder="Password" type="password"
             pattern="^(?=.*\d)(?=.*[@#$%^&*!_])[a-zA-Z][a-zA-Z\d@#$%^&*!_]{5,31}$"
             title="Password must start with a character, at least one digit, one special character, and be 6-32 characters long."
             required/>
 
         </div>
         <div class="mb-3">
+            <label for="input">Confirm:</label>
             <input id="confirm"
             class="form-control mx-auto w-auto"
             name="confirmation"
             placeholder="Confirm password" type="password"
-            required/>
+            required />
         </div>
         <div class="submit-btn">
             <button class="btn btn-primary" type="submit" >Register</button>
         </div>
-    </form>
+
+        <br>
+        <div>
+            <label for="register-now">Already have an account? </label>
+            <a href="/login">Login now</a>
+        </div>
+    </div>
+</form>
+
     <script src="static/scripts/register.js"></script>
 
 {% endblock %}
