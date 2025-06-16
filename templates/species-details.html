@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block style %}
+<style>
+h1 {
+    font-family:"Roboto";
+    font-weight: bold;
+}
+
+#table-cell-infor {
+    text-align: left;
+    margin-left: 30px;
+}
+
+#species-image {
+    height: 25em;
+    width: 37em;
+}
+
+#description {
+    text-align: justify;
+}
+
+#page-title {
+    font-family: "Roboto";
+    border: 1px solid green;
+    border-radius: 5px;
+    background-color: rgba(236, 255, 220, 0.5);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+</style>
+{% endblock %}
+{% block title %}
+    Species details
+{% endblock %}
+
+{% block main %}
+{% if species %}
+<h2 id="page-title">Species Information</h2>
+<br>
+<div class="container">
+    <table>
+        <tr>
+            <td><img id="species-image" src = "/static/images/species/{{species_id}}.png" alt ="{{species['sci_name']}} image" id="species-image"></td>
+            <td>
+                <div class="element" id= "table-cell-infor">
+                    <div>
+                        <b>Species ID:</b> {{ species["id"] }}
+                    </div>
+                    <hr>
+
+                    <div>
+                        <b>Scientific name:</b> <i>{{ species["sci_name"] }}</i>
+                    </div>
+                    <br>
+
+                    <div>
+                        <b>Common name:</b> {{ species["common_name"] }}
+                    </div>
+                    <br>
+
+                    <div>
+                        <b>Lifespan:</b> {{ species["life_span"] }}
+                    </div>
+                    <br>
+
+                    <div>
+                        <b>Habitat:</b> {{ species["habitat"] }}
+                    </div>
+                    <br>
+
+                    <div>
+                        <b>Distribution:</b> {{ species["location"] }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <div class="element" id="description">
+        <b>Description:</b> {{ species["description"] }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

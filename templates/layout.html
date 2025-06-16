@@ -18,7 +18,7 @@
     <nav class="bg-light border navbar navbar-expand-md navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <img src="static/images/bio-genre-2.webp" alt="Bio-Genre Logo" style="height: 35px; width: 32px;"/>
+                <img src="/static/images/bio-genre-2.webp" alt="Bio-Genre Logo" style="height: 35px; width: 32px;"/>
             Bio-Genre</a>
             <button
             aria-controls="navbar" aria-expanded="false"
@@ -39,11 +39,11 @@
                             Species Data
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="datasetDropdown">
-                            <li><a class="dropdown-item" href="/species-manage">Manage</a></li>
                             <li><a class="dropdown-item" href="/species-query">Query</a></li>
+                            <li><a class="dropdown-item" href="/species-manage">Add species</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="/developers">Developers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/api-docs">Developers</a></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link" href="/register">Join us to connect our datasets and BLAST</a></li>
                     {% endif %}

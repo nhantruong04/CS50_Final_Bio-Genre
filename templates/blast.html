@@ -2,6 +2,57 @@
 
 {% block style %}
 <style>
+.container-blast {
+    border: 1px solid green;
+    border-radius: 5px;
+    background-color: rgba(236, 255, 220, 0.5);
+    max-width: 95%;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 50px !important;
+    margin: auto;
+
+    padding-right: 90px;
+
+}
+
+.title {
+    font-family: "Roboto";
+    font-weight: bold;
+}
+
+.form-row {
+    display : flex;
+    gap: 40px;
+    margin: auto;
+    width: 90%;
+}
+
+.query-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.query-group input {
+    width: 200px;
+}
+
+.query-group select {
+    width: 150px;
+}
+
+.query-group input:focus {
+    border-color: lightgreen !important;
+    box-shadow: 0 0 0 0.2rem rgba(144, 238, 144, 0.5);
+}
+
+.query-group label {
+    font-weight: bold;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
 
 </style>
 {% endblock %}
@@ -11,5 +62,64 @@
 {% endblock %}
 
 {% block main %}
-<h1> Basic Local Alignment Search Tool </h1>
+<h1 class="title"> Basic Local Alignment Search Tool </h1>
+<br>
+
+<div class="container-blast">
+<h3 class="title">Algorithm parameter</h3>
+<br>
+<form class="blast-form" action="/blast" method='POST'>
+    <div class="form-row">
+        <div class="query-group">
+            <label for="species-id">Match/Mismatch:</label>
+            <select defval="1,-1" name="match-mismatch" class="form-select">
+                <option val="1,-1" selected="selected">1,-1</option>
+                <option val="1,-2">1,-2</option>
+                <option val="1,-3">1,-3</option>
+                <option val="1,-4">1,-4</option>
+                <option val="2,-3">2,-3</option>
+                <option val="4,-5">4,-5</option>
+            </select>
+        </div>
+
+        <div class="query-group">
+            <label for="scientific-name">Gap penalty:</label>
+            <select defval="-1" name="gap" class="form-select">
+                <option val="-1" selected="selected">-1</option>
+                <option val="-2">-2</option>
+                <option val="-3">-3</option>
+
+            </select>
+        </div>
+
+        <div class="query-group">
+            <label for="distribution" style="margin-left: 40%;">Query sequence (DNA):</label>
+             <textarea name="query" type="text" class="form-control" id="query" rows="4" placeholder="Enter your DNA sequence. The sequence length must be in range from 5 to 1,000 bp" style="width: 500px;" required></textarea>
+
+        </div>
+    </div>
+
+    <div class="submit-btn">
+            <button id="search-btn" class="btn btn-primary" type="submit" style="margin-top: 30px;">Search</button>
+    </div>
+</form>
+</div>
+
+
+
+<script>
+    function valid_sequence(event) {
+        query = document.querySelector("#query").value.trim();
+
+        if (query.length < 5 || query.length > 1000 || !/^[ATGCatgc]+$/.test(query)) {
+            event.preventDefault();
+            alert("Please provide a valid DNA sequence (A,T,G,C). Length in 5 - 1000 bp");
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.blast-form').addEventListener('submit', valid_sequence);
+    });
+</script>
 {% endblock %}
+

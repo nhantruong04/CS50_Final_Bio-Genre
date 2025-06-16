@@ -1,0 +1,199 @@
+{% extends "layout.html" %}
+{% block style %}
+<style>
+main {
+    background-color: rgba(236, 255, 220, 0.5);
+}
+.container {
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-top: 40px !important;
+}
+
+
+.container-docs {
+    font-family: "math";
+    width: 100%;
+    font-size: 16px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+
+.parameter {
+    color: green;
+    font-weight: bold;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+    font-size: 16.5px;
+}
+
+
+.two-column {
+    display: flex;
+    gap: 30px; /* control space between columns */
+    text-align: left !important;
+    justify-content: space-between;
+
+}
+
+.column-1 {
+    width:55%;
+}
+
+.column-2 {
+    width: 45%;
+}
+
+.child-properties {
+    font-size: 16px;
+    border: 1px solid rgb(173, 216, 240);
+    border-radius: 5px;
+    background-color:white;
+    padding-left: 20px;
+    padding-top: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+</style>
+{% endblock %}
+{% block title %}
+    Species API
+{% endblock %}
+
+{% block main %}
+<section class="container-docs">
+    <h1> Species API: Developer Documentation </h1>
+    <br>
+
+    <div class="two-column">
+        <div class="column-1">
+            <span>Acces the diverse species information: name, lifespan, habitat, location,...</span> <br>
+            <a href="/api/species?year=2025">Try it now</a>
+        </div>
+
+        <div class="column-2">
+            <code>GET /api/species -d year="2025"</code>
+        </div>
+    </div>
+    <hr>
+    <div class="two-column">
+        <div class="column-1">
+            <h5><b>Required parameter</b></h5>
+            <code class="parameter">year</code>
+            <code class="text-secondary muted ml-1">- positive integer</code>
+            <p>Four digit year number, in range of 2025 to 9999.</p>
+
+            <hr>
+            <h5><b>Optional parameter</b></h5>
+
+            <code class="parameter">id</code>
+            <code class="text-secondary muted ml-1">- positive integer</code>
+            <p>Positive integer, belong to a specific species.</p>
+
+            <code class="parameter">sci_name</code>
+            <code class="text-secondary muted ml-1">- string</code>
+            <p>Search species by scientific name, accept special character: space, single quote. Minimum 4 characters.</p>
+
+            <code class="parameter">common_name</code>
+            <code class="text-secondary muted ml-1">- string</code>
+            <p>Search species by common name, accept special character: space, single quote, hyphen. Minimum 4 characters.</p>
+
+            <code class="parameter">location</code>
+            <code class="text-secondary muted ml-1">- string</code>
+            <p>Search species by country or region which is written in English, accept special character: space, single quote, hyphen. Minimum 4 characters.</p>
+
+
+        </div>
+
+        <div class="column-2">
+            <h5><b>Return properties</b></h5>
+            <code class="parameter">status</code>
+            <code class="text-secondary muted ml-1">- number</code>
+            <p>Respond status code.</p>
+
+            <code class="parameter">result</code>
+            <code class="text-secondary muted ml-1">- list of dictionaries</code><br>
+            <span>List of species information based on query parameter.</span><br>
+            <button type="button" class="btn btn-outline-success" id="child-properties-btn" style="font-family: 'Roboto';">
+                 Show child properties
+            </button><br>
+            <div class="child-properties" style="display:none;">
+
+                <code class="parameter">result.id</code>
+                <code class="text-secondary muted ml-1">- number</code>
+                <p>ID of species, positive integer.</p>
+
+                <code class="parameter">result.common_name</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>Common name of species.</p>
+
+                <code class="parameter">result.sci_name</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>Scientific name of species.</p>
+
+                <code class="parameter">result.description</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>General introduction about the species.</p>
+
+                <code class="parameter">result.habitat</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>Living environment of species.</p>
+
+                <code class="parameter">result.life_span</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>Avarage lifespan of species (year or month or week or day).</p>
+
+                <code class="parameter">result.location</code>
+                <code class="text-secondary muted ml-1">- string</code>
+                <p>Geographic distribution of species (country or region).</p>
+
+
+                <code class="parameter">result.updated_time</code>
+                <code class="text-secondary muted ml-1">- daytime</code>
+                <p> Latest updating time of species informations (yyyy/mm/dd - [hh]:[mm]:[ss]). Time zone in Vietnam (GMT+7).</p>
+            </div>
+            <br>
+
+            <code class="parameter">error</code>
+            <code class="text-secondary muted ml-1">- string</code>
+            <p>Display the error for the request (optional return property).</p>
+
+            <hr>
+            <div>
+            <h5><b>Sample respond</b></h5>
+            <pre>
+    {
+        <code class="parameter">"respond status":</code> 200,
+        <code class="parameter">"result":</code> [...]
+    }
+            </pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function display(event) {
+        const button = document.querySelector("#child-properties-btn");
+        const child_properties = document.querySelector(".child-properties");
+
+        if (child_properties.style.display === "none") {
+        child_properties.style.display = "block";
+        button.innerHTML = ` Hide child properties`
+        }
+        else {
+            child_properties.style.display = "none";
+            button.innerHTML = ` Show child properties`
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector("#child-properties-btn").addEventListener('click', display);
+    });
+</script>
+{% endblock %}

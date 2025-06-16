@@ -17,7 +17,7 @@
     display : flex;
     gap: 28px;
     margin: auto;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .query-group {
@@ -54,7 +54,7 @@
 {% endblock %}
 
 {% block main %}
-<form action="/species-manage" method="POST">
+<form action="/species-manage" method="POST" enctype="multipart/form-data">
 <div class="form-row">
     <div class="query-group">
         <label for="common-name">Common name:</label>
@@ -73,22 +73,27 @@
     </div>
 
     <div class="query-group">
-        <label for="species-id">Life span:</label>
+        <label for="species-id">Lifespan:</label>
         <input name="life_span" type="text" class="form-control" id="life-span" placeholder="Enter specie's life span" style="width: 150px;" required/>
     </div>
 
     <div class="query-group">
         <label for="distribution">Geographic distribution:</label>
-        <input name="location_value" type="text" class="form-control" id="location" placeholder="Enter sepcies's distribution location" style="width: 279px;"required/>
+        <input name="location_value" type="text" class="form-control" id="location" placeholder="Enter sepcies's distribution location" style="width: 21em;"required/>
     </div>
 </div>
 
 <div class="form-row">
     <div class="query-group">
         <label for="distribution">Description:</label>
-        <textarea name="description" type="text" class="form-control" rows="6" id="location" placeholder="Enter sepcies's description" style="width: 70em;" required></textarea>
+        <textarea name="description" type="text" class="form-control" rows="6" placeholder="Enter sepcies's description" style="width: 51em;" required></textarea>
+    </div>
+    <div class="query-group">
+        <label for="formFile" class="form-label">Upload species image:</label>
+        <input class="form-control" type="file" name="image" id="formFile" required  accept=".png" style="width: 21em;">
     </div>
 </div>
+
 
 <div class="submit-btn">
         <button id="search-btn" class="btn btn-primary" type="submit" style="margin-top: 20px;">Add specie</button>

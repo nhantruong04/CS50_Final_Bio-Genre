@@ -8,7 +8,7 @@
     }
 
     nav {
-        margin-bottom: 20px;
+        margin-bottom: 1px;
     }
 
     .container-custome {
@@ -35,6 +35,7 @@
         padding-left: 40px;
         padding-top: 10px;
         padding-bottom: 10px;
+
     }
 
     .container {
@@ -42,6 +43,9 @@
         margin-right: 50px;
         margin-left: 50px;
         margin-top: 20px;
+        text-align: justify;
+        width: 100% !important;
+        margin-top: 0;
     }
     .container p {
         font-size: 20px;
@@ -64,22 +68,41 @@
         <p> Take a look at our bioinformatic toolkit </p>
      </div>
 </div>
+
+{% endblock %}
+
+{% block main %}
 <div class="container">
     <h3> 1. Sequence analyzing: </h3>
     <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
         such as: sequence length, GC content, motif finding,...
     </p>
+    <br>
 
     <h3> 2. BLAST: </h3>
-    <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
-        such as: sequence length, GC content, motif finding,...
+    <p> We construct a heuristic BLASTN algorithm for high similarity region searching in the query and the database sequence to find out biological relation.
     </p>
 
-    <h3> 3. Data query </h3>
-    <p> Our website provide the "Sequence-calculator" that helps scientist analyze their sequence properties
-        such as: sequence length, GC content, motif finding,...
+    <p> This algorithm generate smaller words (seed, size = 3) generated from the query sequence and the database sequence and indexing them.
+        Then we find each seed with in the database sequence. Once a seed is found, it will be extended from both direction to find the most optimal region to align. After that, we perform local alignment using Smith-Waterman algorithm for this region and collect the high scoring region.
+        High scoring region is considered to be greater than or equal to the 70 % of max score (0.7*query_length*match).
     </p>
+
+    <p>
+        Repetitive and low-complexity sequences (such as AAAAAA or TTTTCTTT) cause problems for search and clustering algorithms based on matching words. Low-complexity sequences cause certain words to have high frequencies, which can cause performance problems if they are not masked.
+        Therefore, these seeds which the frequency that are greater than or equal to 20 will be ignored.
+    </p>
+    <br>
+
+    <h3> 3. Species query </h3>
+    <p> Species data query is a tool that help users get the information of species based on different parameters.
+        The information includes scientific name, common name, lifespan, habitat,... and the general introduction about the species.
+    </p>
+    <br><br>
+
+    <div style="text-align: center;"> <h3 > --- Disclaimer --- </h3> </div>
+    <p> The information on this website is provided for study purposes only.
+        We do not guarantee its accuracy or completeness. Use of the content is at your own risk. We are not responsible for any errors, omissions, or outcomes related to the use of this site.  </p>
 </div>
-
 
 {% endblock %}

@@ -1,5 +1,7 @@
 from functools import wraps
 from flask import session, redirect, flash, render_template
+from collections import defaultdict
+
 
 codon_usage = {
     "UUU": "F", "UUC": "F", "UUA": "L", "UUG": "L",
@@ -125,16 +127,23 @@ def orf_search(sequence):
 
     return '\n'.join(set(orf)), output
 
-def valid_str_parameter(s: str):
+def valid_sci_name(s: str):
     for char in s:
-        if not char.isalpha() and char != " ":
+        if not char.isalpha() and char != " " and char != '-':
             return False
     return True
 
 
-# IMPLEMENT BLAST ALGORITHM: strategy to search all the chromosome of organism
+def valid_common_name(s: str):
+    for char in s:
+        if not char.isalpha() and char not in ["'", "-", " "]:
+            return False
+    return True
 
-# Generate k-mers in the sequence k=3 for sequence < 10bp and k = 5 for longer sequence
-# Find k-mers match in the db sequence
-# Extend the match from both direction
-# Score and filter alignment: +1 for match; -1 for mismatch
+def valid_location(s: str):
+    for char in s:
+        if not char.isalpha() and char not in ["'", "-", " "]:
+            return False
+    return True
+
+

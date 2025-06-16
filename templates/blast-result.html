@@ -1,0 +1,223 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<style>
+.container-blast {
+    border: 1px solid green;
+    border-radius: 5px;
+    background-color: rgba(236, 255, 220, 0.5);
+    max-width: 100%;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 30px !important;
+    margin: auto;
+    padding-right: 180px;
+    margin-bottom: 20px;
+
+
+}
+
+.parameter-title {
+    font-family: "Roboto";
+    font-weight: bold;
+    padding-left: 7em;
+}
+
+.form-row {
+    display : flex;
+    gap: 40px;
+    margin: auto;
+    width: 90%;
+}
+
+.query-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.query-group input {
+    width: 200px;
+}
+
+.query-group label {
+    font-weight: bold;
+}
+
+.query-group select {
+    width: 150px;
+}
+
+.btn.btn-outline-success {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.btn.btn-outline-success:active {
+    background-color: green !important;
+}
+
+.table2 {
+    text-align: left;
+    font-family: "Roboto";
+}
+
+.display-row {
+    display : flex;
+    gap: 28px;
+    margin: auto;
+    font-size: 17px;
+}
+
+.show-align-infor {
+    margin-right: 0%;
+    border:none;
+    background-color:rgba(89, 238, 114, 0.979);
+}
+</style>
+{% endblock %}
+
+{% block title %}
+    BLAST result
+{% endblock %}
+
+{% block main %}
+<div class="container-blast">
+<h3 class="parameter-title">Your parameters</h3>
+<br>
+    <div class="form-row">
+        <div class="query-group">
+            <label for="species-id">Match/Mismatch:</label>
+            <input class="form-control" value="{{score}}" disabled/>
+        </div>
+
+        <div class="query-group">
+            <label for="scientific-name">Gap penalty:</label>
+            <input class="form-control" value="{{gap}}" disabled/>
+        </div>
+
+        <div class="query-group">
+            <label for="distribution" style="margin-left: 40%;">Query sequence:</label>
+             <textarea
+            type="text" class="form-control"
+             id="query" rows="4" style="width: 500px;" disabled>{{query}}</textarea>
+
+        </div>
+    </div>
+</div>
+
+{% if all_result %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="">
+          <button type="button" class="btn btn-outline-success" id="description">Summaries</button>
+        </li>
+        <li class="">
+          <button type="button" class="btn btn-outline-success" id="alignment">Alignment</button>
+        </li>
+        </ul>
+    </div>
+</nav>
+<div class="table1">
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+        <th scope="col">Result</th>
+      <th scope="col">Description</th>
+      <th scope="col">Scientific name</th>
+      <th scope="col">Max score</th>
+      <th scope="col">Total score</th>
+      <th scope="col">Sequence ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in all_result %}
+    <tr>
+        <td>{{loop.index}}</td>
+        <td>{{row["description"]}}</td>
+        <td><a href="/species-details?species_id={{row['species_id']}}" target="_blank"><i>{{row["sci_name"]}}</i></a></td>
+        <td>{{row["max_score"]}}</td>
+        <td>{{row["total_score"]}}</td>
+        <td>{{row["sequence_id"]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+<div class="table2" style="display: none;">
+    {% for row in all_result %}
+    <section>
+        <div class="display-row"
+        style="background-color:  rgba(89, 238, 114, 0.979);
+                margin-bottom: 10px;">
+            <span><b>&nbsp;[{{loop.index}}] - Description:</b> {{row["description"]}}</span>
+            <span><b>ID: </b> {{row["sequence_id"]}}</span>
+            <span><b>Length:</b> {{row["sequence_length"]}}</span>
+            <span><b>Total score:</b> {{row["total_score"]}}</span>
+            <span><b>Number of match:</b> {{row["number_of_matches"]}}</span>
+
+        </div>
+
+        {% for each_align in row["alignment_result"] %}
+        <section>
+            <div class="display-row">
+                <span> <b>Align {{ loop.index }}:</b></span>
+                <span> Score: {{ each_align['align']['score'] }}</span>
+                <span> Indentity: {{ each_align['align']['identity'] }}</span>
+                <span> Gap: {{ each_align['align']['gap'] }}</span>
+            </div>
+            <hr>
+            <pre class="align-scheme" style="font-size: 15px;">
+    Query: {{ each_align['align']['print_start_location'][0] }} {{ each_align['align']['query'] }} {{ each_align['align']['query_align_location'][1] }}
+           {{ each_align['align']['align_print'] }}
+    Sbjct: {{ each_align['align']['print_start_location'][1] }} {{ each_align['align']['subject'] }} {{ each_align['align']['subject_align_location'][1] }}
+            </pre>
+        </section>
+        {% endfor %}
+    </section>
+    {% endfor %}
+</div>
+{% else %}
+<h3>No significant similarity found</h3>
+
+{% endif %}
+
+<script>
+    function display(event) {
+        const table1 = document.querySelector(".table1");
+        const table2 = document.querySelector(".table2");
+        const button = event.target.id;
+
+        if (button === 'description') {
+            table2.style.display = "none";
+            table1.style.display = "block";
+        }
+
+        else if (button === 'alignment') {
+            table1.style.display = "none";
+            table2.style.display = "block";
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('#description').addEventListener('click', display);
+        document.querySelector('#alignment').addEventListener('click', display)
+    });
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

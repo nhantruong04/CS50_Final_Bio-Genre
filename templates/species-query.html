@@ -75,7 +75,7 @@
     border: 1px solid green;
     border-radius: 5px;
     width: 19.3em;
-    height: 26em;
+    height: 28em !important;
     text-align: center;
 }
 
@@ -123,7 +123,7 @@
         </div>
 
         <div class="query-group">
-            <label for="distribution">Geographic distribution:</label>
+            <label for="distribution">Distribution (country/region):</label>
             <input type="text" class="form-control" id="location" placeholder="Enter sepcies's distribution location" style="width: 280px;"/>
         </div>
     </div>
@@ -186,14 +186,17 @@
                 result_count.textContent = `Result: ${jsdata.result.length}`;
 
                 for (const specie of jsdata.result) {
-                const element = document.createElement('div');
-                element.className = "query-result-element";
-                element.innerHTML =
-                `<img src = "/static/images/species/${specie.id}.png" alt ="${specie.sci_name}'s image" id="species-image"></td>
-                <p> <span class="element-sci-name">${specie.sci_name}</span><br>
-                    <span class="element-common-name">${specie.common_name}</span>
-                </p>`;
-                resultContainer.appendChild(element);
+                    const element = document.createElement('div');
+                    element.className = "query-result-element";
+                    element.innerHTML =
+                    `<section action="/species-details">
+                        <img src = "/static/images/species/${specie.id}.png" alt ="${specie.sci_name}'s image" id="species-image">
+                        <p> <span class="element-sci-name">${specie.sci_name}</span><br>
+                            <span class="element-common-name">${specie.common_name}</span>
+                        </p>
+                        <button type="button" ><a style="text-decoration: none;" href="/species-details?species_id=${specie.id}" target="_blank">Read more</a></button>
+                    </section>`;
+                    resultContainer.appendChild(element);
                 }
             }
         });
