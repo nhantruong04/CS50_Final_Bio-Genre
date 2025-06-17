@@ -1,5 +1,6 @@
 
 import os
+import uuid
 from cs50 import SQL
 from flask import Flask, redirect, render_template, flash, request, session, jsonify
 from flask_session import Session
@@ -23,9 +24,13 @@ Session(app)
 # Configure CS50 Library to apply SQLite database
 db = SQL("sqlite:///bio-genre.db")
 
-# admin log in key
+# admin key to access species-data/add species
 security_key = "123456"
+# Generate a random UUID (UUID4); using for asscess granted key after admin has enter correct security key
+random_uuid = uuid.uuid4() # session["access_granted"] = random_uuid
 
+
+print("Random UUID:", random_uuid)
 @app.route("/")
 def homepage():
     return render_template("homepage.html")
@@ -152,55 +157,59 @@ def allowed_file(filename):
 @app.route("/species-manage", methods = ['GET', 'POST'])
 @login_required
 def admin_login():
-    if session["role"] == 'admin' and request.method == 'GET':
-        if not session.get("access_granted",""):
-            return redirect("/admin-access")
-        if session["access_granted"] == True:
-            return render_template("species-manage.html")
-    elif session["role"] == 'admin' and request.method == 'POST' and session["access_granted"] == True:
-        # UPDATE DATA to DATABASE
-        sci_name =  request.form.get("sci_name")
-        common_name = request.form.get("common_name")
-        habitat = request.form.get("habitat")
-        life_span = request.form.get("life_span")
-        location_value = request.form.get("location_value")
-        description = request.form.get("description")
+    if session["role"] == 'admin':
+        if request.method == 'GET':
+            if session.get("access_granted", "") == random_uuid:
+                return render_template("species-manage.html")
+            else:
+                return redirect("/admin-access")
+        elif request.method == 'POST':
+            if session.get("access_granted", "") == random_uuid:
+                # UPDATE DATA to DATABASE
+                sci_name =  request.form.get("sci_name")
+                common_name = request.form.get("common_name")
+                habitat = request.form.get("habitat")
+                life_span = request.form.get("life_span")
+                location_value = request.form.get("location_value")
+                description = request.form.get("description")
 
-        if not valid_sci_name(sci_name):
-            flash("Scientific name can contain only alphabet, hyphen and space!")
-            return redirect("/species-manage")
+                if not valid_sci_name(sci_name):
+                    flash("Scientific name can contain only alphabet, hyphen and space!")
+                    return redirect("/species-manage")
 
-        if not valid_common_name(common_name):
-            flash("Common name can contain only alphabet, hyphen, single quote and space!")
-            return redirect("/species-manage")
+                if not valid_common_name(common_name):
+                    flash("Common name can contain only alphabet, hyphen, single quote and space!")
+                    return redirect("/species-manage")
 
-        # check if the post request has the file
-        if 'image' not in request.files:
-            flash('No image file part')
-            return redirect("/species-manage")
+                # check if the post request has the file
+                if 'image' not in request.files:
+                    flash('No image file part')
+                    return redirect("/species-manage")
 
-        file = request.files.get("image")
+                file = request.files.get("image")
 
-        # If the user does not select a file, the browser submits an empty file without a filename.
-        if not file or file.filename == '':
-            flash('No image selected. Species image is required')
-            return redirect("/species-manage")
+                # If the user does not select a file, the browser submits an empty file without a filename.
+                if not file or file.filename == '':
+                    flash('No image selected. Species image is required')
+                    return redirect("/species-manage")
 
-        if file and allowed_file(file.filename):
-            db.execute('''INSERT INTO species (sci_name, common_name, habitat, life_span, location, description)
-                    VALUES(?,?,?,?,?,?)''', sci_name,common_name,habitat,life_span,location_value,description)
+                if file and allowed_file(file.filename):
+                    db.execute('''INSERT INTO species (sci_name, common_name, habitat, life_span, location, description)
+                            VALUES(?,?,?,?,?,?)''', sci_name,common_name,habitat,life_span,location_value,description)
 
-            new_species_id = db.execute("SELECT id FROM species WHERE sci_name = ? AND common_name = ?", sci_name, common_name)[0]["id"]
-            filename = f'{new_species_id}.png'
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    new_species_id = db.execute("SELECT id FROM species WHERE sci_name = ? AND common_name = ?", sci_name, common_name)[0]["id"]
+                    filename = f'{new_species_id}.png'
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        flash("Species adding success!")
-        return redirect("/species-manage")
+                flash("Species adding success!")
+                return redirect("/species-manage")
+            else:
+                flash("Incorrect security key")
+                return redirect("/admin-access")
 
     else:
         flash("Only admin can use this feature!")
         return redirect("/")
-
 
 
 @app.route("/admin-access", methods = ['GET', 'POST'])
@@ -210,7 +219,7 @@ def admin_access():
         return render_template("admin-access.html")
     elif session["role"] == 'admin' and request.method == 'POST':
         if request.form.get("security_key") == security_key:
-            session["access_granted"] = True
+            session["access_granted"] = random_uuid
             flash("Access granted!")
             return redirect("/species-manage")
         else:

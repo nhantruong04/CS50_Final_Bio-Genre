@@ -161,6 +161,7 @@ def smith_waterman(query, db_seq, match, mismatch, gap, hssp, star_q, start_s):
 
         # pre-processing the space in start location, to format ouput printing
         space_start = len(str(subject_start)) - len(str(query_start))
+
         if space_start > 0:
             print_start_location = (f"{space_start*' '}{str(query_start)}",str(subject_start)) # insert space into query
         elif space_start < 0:
@@ -171,14 +172,17 @@ def smith_waterman(query, db_seq, match, mismatch, gap, hssp, star_q, start_s):
         result.append({'align':
                        {"query": align_query,
                         "subject": align_db_seq,
-                        "query_align_location": (query_start, query_end), "subject_align_location": (subject_start,subject_end),
+                        "query_align_location": (query_start, query_end),
+                        "subject_align_location": (subject_start,subject_end),
                         "score": score,
                         "identity": identity,
                         "gap": gap_ratio,
                         'align_print': f"{space_align*' '} {align_print}",
-                        'print_start_location': print_start_location
+                        'print_start_location': print_start_location,
+                        'aligment_length': len(align_query)
                         }
                     })
+
     return result
 
 

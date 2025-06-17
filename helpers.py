@@ -142,7 +142,7 @@ def valid_common_name(s: str):
 
 def valid_location(s: str):
     for char in s:
-        if not char.isalpha() and char not in ["'", "-", " "]:
+        if not char.isalpha() and char not in ["'", "-", " ", "."]:
             return False
     return True
 
