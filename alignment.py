@@ -187,7 +187,7 @@ def smith_waterman(query, db_seq, match, mismatch, gap, hssp, star_q, start_s):
 
 
 # Interate through the sequence, find match and start to extend
-def blastn (query, db_seq, match, mismatch, gap, seed_size = 3):
+def blastn (query, db_seq, match, mismatch, gap, seed_size = 5):
     hssp = 0.7*len(query)
     # Indexing the seed in query and db_sub_seq
     db_sub_seq = k_mers_dict(db_seq, seed_size)
@@ -206,7 +206,7 @@ def blastn (query, db_seq, match, mismatch, gap, seed_size = 3):
     for seed, seed_index in query_seed.items():
         if seed in db_sub_seq.keys():
             # low-complexity masking. Skipping high-frequency seeds filters out low-quality, repetitive alignments
-            if len(db_sub_seq[seed]) >= 20 or len(query_seed[seed]) >= 20:
+            if len(db_sub_seq[seed]) >= 30 or len(query_seed[seed]) >= 30:
                 continue
             # seed found, start to align each seed index in each matched position i db_seq (subject)
             # interate throug each posion of k-mer for each position in db_seq

@@ -11,7 +11,7 @@
 Enter a DNA or RNA sequence into the sequence input, choose your calculation option then submit the sequence. The ruslt will be display below.
 
 ### BLAST (Basic local alignment search tool)
-    We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 3) generated from the query sequence and the database sequence and indexing them.
+    We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 5) generated from the query sequence and the database sequence and indexing them.
 
     Then we find each seed with in the database sequence. Once a seed is found, it will be extended from both direction to find the most optimal region to align. After that, we perform local alignment using Smith-Waterman algorithm for this region and collect the high scoring region.
     High scoring region is considered to be greater than or equal to the 70 % of max score (0.7*query_length*match).

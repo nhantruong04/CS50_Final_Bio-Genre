@@ -87,13 +87,14 @@ def blast():
     else:
         score = request.form.get("match-mismatch").split(',')
         query = request.form.get("query").upper().strip()
-
         gap = request.form.get("gap")
 
         if not query or not score or not gap:
             flash("Please fill all parameters")
             return render_template("blast.html")
-
+        if len(query) > 200:
+            flash("Not support query sequence larger than 200 bp")
+            return render_template("blast.html")
         match = int(score[0])
         mismatch = int(score[1])
         gap = int(gap)
