@@ -11,7 +11,7 @@
     - x_drop = 5. The stop signal when extend a seed
 5. Look up each seed of query in the db_seq.
    Repetitive and low-complexity sequences (such as AAAAAA or TTTTCTTT) cause problems for search and clustering algorithms based on matching words
-   So seeds with high frequency ( >= 20) will be ignore.
+   So seeds with high frequency ( >= 30) will be ignore.
 6. If found, start to extend from both direction and calculate score of both side. Until max_score - current_score >= x-drop
 7. Then allow gapped BLAST:
     - From the extended sequence, continue to expand it with a window_pad, left + 10 bases and right + 10 base (for simple).Because, we may have more similarity when expand the window and allow gapped BLAST.
