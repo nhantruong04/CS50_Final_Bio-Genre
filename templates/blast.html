@@ -115,7 +115,7 @@ function valid_sequence(event) {
         const query = document.querySelector("#query").value.trim();
 
         if (query.length < 5 || query.length > 200 || !/^[ATGCatgc]+$/.test(query)) {
-            event.preventrunDefault();
+            event.preventDefault();
             alert("Please provide a valid DNA sequence (A,T,G,C). Length in 5 - 200 bp");
         } else {
             document.querySelector('#running').style.display = 'block';
