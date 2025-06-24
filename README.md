@@ -11,7 +11,9 @@
 Enter a DNA or RNA sequence into the sequence input, choose your calculation option then submit the sequence. The ruslt will be display below.
 
 ### BLAST (Basic local alignment search tool)
-    Assume that we have 10 species, each species have 6 - 10 chromosome, each chromosome is 1500 - 2000 bp length. We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 5) generated from the query sequence and the database sequence and indexing them.
+    Assume that we have 10 species, each species have 6 - 10 chromosome, each chromosome is 1500 - 2000 bp length. Once a user want to find relation of a DNA sequence (query) e.g "ATGCATGCAGTCATGTC" amoung our species database. BLAST will search this sequence among the database and find out this query sequence have "high-similarity" (greater than or equal to 70% max score) to which species at which chromosome.
+    The scoring matrix is depend on user customes. For example, match/mismatch = 1,-1, gap = -1 means each identical pair of query and database sequence will be +1 and -1 for unidentical pair, and gap cost is -1 (to insert a "-" to get more identical pair). The query sequence "ATGCATGCAGTCATGTC" have max score = 17 and BLAST will select species that have high-similarity chromosome to this query sequence.
+    We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 5) generated from the query sequence and the database sequence and indexing them.
 
     Then we find each seed with in the database sequence. Once a seed is found, it will be extended from both direction to find the most optimal region to align. After that, we perform local alignment using Smith-Waterman algorithm for this region and collect the high scoring region.
     High scoring region is considered to be greater than or equal to the 70 % of max score (0.7*query_length*match).
