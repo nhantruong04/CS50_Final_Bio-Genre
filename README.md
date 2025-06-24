@@ -11,15 +11,15 @@
 Enter a DNA or RNA sequence into the sequence input, choose your calculation option then submit the sequence. The ruslt will be display below.
 
 ### BLAST (Basic local alignment search tool)
-    We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 5) generated from the query sequence and the database sequence and indexing them.
+    Assume that we have 10 species, each species have 6 - 10 chromosome, each chromosome is 1500 - 2000 bp length. We construct a heuristic BLASTN (only support DNA sequence) algorithm for high similarity region searching in the query and the database sequence to find out biological relation.This algorithm generate smaller words (seed, size = 5) generated from the query sequence and the database sequence and indexing them.
 
     Then we find each seed with in the database sequence. Once a seed is found, it will be extended from both direction to find the most optimal region to align. After that, we perform local alignment using Smith-Waterman algorithm for this region and collect the high scoring region.
     High scoring region is considered to be greater than or equal to the 70 % of max score (0.7*query_length*match).
 
-    Repetitive and low-complexity sequences (such as AAAAAA or TTTTCTTT) cause problems for search and clustering algorithms based on matching words. Low-complexity sequences cause certain words to have high frequencies, which can cause performance problems if they are not masked. Therefore, these seeds which the frequency that are greater than or equal to 20 will be ignored.
+    Repetitive and low-complexity sequences (such as AAAAAA or TTTTCTTT) cause problems for search and clustering algorithms based on matching words. Low-complexity sequences cause certain words to have high frequencies, which can cause performance problems if they are not masked. Therefore, these seeds which the frequency that are greater than or equal to 30 will be ignored.
 
 **TO USE:**
- Enter your DNA sequence (length from 5 to 1,000 bp). Then select scoring parameter for match/mismatch and gap in the alignment. The result will be display into two option
+ Enter your DNA sequence (length from 5 to 200 bp). Then select scoring parameter for match/mismatch and gap in the alignment. The result will be display into two option
 * A summaries table of sequence that match your query. This give an overview of sequence name, related species, max score and total score in this sequence.
 * Alignment details of each matched sequence. This will help you to get the position infor, score, identity and gap of each alignment.
 
