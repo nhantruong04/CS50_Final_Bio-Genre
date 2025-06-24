@@ -27,6 +27,12 @@ Assume that we have chromosome (DNA) database of 11 species, each species have 6
     
 The scoring matrix is depend on user customes. For example, match/mismatch = 1,-1, gap = -1 means each identical pair of query and database sequence will be +1 and -1 for unidentical pair, and gap cost is -1 (to insert a "-" to get more identical pair). The query sequence "ATGCATGCAGTCATGTC" have max score = 17 and BLAST will select species that have high-similarity chromosome to this query sequence.
 
+#### Test case (input):
+Query sequence = "ATGCATGCAGTCATGTC"
+#### Result (output):
+1. Aquilegia nuragica, chromosome 2
+2. Pterapogon kauderni, chromosome 4
+
 #### The algorithm work as follow:
 1. Break the query sequence into small substring (seeds), length = 3 (seed_size)
 2. Hash the position of each seed into a dict e.g 'AGCTA' -> {'AGC': 0, 'GCT': 1, 'CTA': 2}.
